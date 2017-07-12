@@ -55,7 +55,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="car_alert">
+		<table tableName="car_info">
 			<!-- <generatedKey column="id" sqlStatement="MySql" identity="true"/> -->
 		</table>
 
