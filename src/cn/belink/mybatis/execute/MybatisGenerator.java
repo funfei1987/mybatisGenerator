@@ -1,9 +1,6 @@
 package cn.belink.mybatis.execute;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -11,8 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.mybatis.generator.api.MyBatisGenerator;
+import org.mybatis.generator.api.ProgressCallback;
+import org.mybatis.generator.api.VerboseProgressCallback;
 import org.mybatis.generator.config.Configuration;
-import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
@@ -21,33 +19,6 @@ public class MybatisGenerator {
 	private static Properties properties = new Properties();
 
 	public static void main(String[] args) throws Exception {
-
-		load();
-		Context content = create();// 创建实体
-		System.out.println("生成完成");
-
-	}
-
-	private static void load() {
-		String savePath = MybatisGenerator.class
-				.getResource("/conf/path.properties").getPath();
-		try {
-			InputStream in = new BufferedInputStream(new FileInputStream(
-					savePath));
-			properties.load(in);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	/**
-	 * 创建实体，mapper，xml
-	 * 
-	 * @param jspPath
-	 * @throws Exception
-	 */
-	private static Context create() throws Exception {
 
 		String filePath =   "src/generatorConfig.xml";
 		List<String> warnings = new ArrayList<String>();
@@ -59,9 +30,12 @@ public class MybatisGenerator {
 		DefaultShellCallback callback = new DefaultShellCallback(overwrite);
 		MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config,
 				callback, warnings);
-		myBatisGenerator.generate(null);
-		Context content = config.getContext("mysqlTables");
-		return content;
+		ProgressCallback progressCallback = new VerboseProgressCallback();
+		myBatisGenerator.generate(progressCallback);
+		 for (String warning : warnings) {
+	            System.out.println(warning);
+	        }
+		 System.out.println("生成完成");
 
 	}
 
@@ -81,5 +55,4 @@ public class MybatisGenerator {
 		}
 		return property.replaceAll("_", "");
 	}
-
 }

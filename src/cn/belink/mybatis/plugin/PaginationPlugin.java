@@ -22,7 +22,7 @@ public class PaginationPlugin extends PluginAdapter {
 	public PaginationPlugin() {
         super();
     }
-	private static final String baseDir = "cn.feezu.wzc.vehicle.service";
+	private static final String baseDir = "cn.feezu.wzc.vehicle.service.entity";
 	 
     @Override  
     public boolean modelExampleClassGenerated(TopLevelClass topLevelClass,  
